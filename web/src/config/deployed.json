@@ -1,0 +1,15 @@
+{
+  "chainId": 31337,
+  "deployedAt": "2026-10-03T17:55:39.666Z",
+  "network": "Local Testnet",
+  "contracts": {
+    "OperonRegistryERC8004": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+    "OperonPolicyManager": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+    "TestOrderBook": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+    "TestMON": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9"
+  },
+  "defaultAgents": [
+    "0x468681bd99d65ba801e1fae5ff9793e1330e4f4951e65330f0cde671884ac576",
+    "0x7db6a5e48f7f38ad1b6ad2c39a32a6ad5232d44a7f71b972d02968639f506e8a"
+  ]
+}

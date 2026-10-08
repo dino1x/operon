@@ -1,0 +1,14 @@
+{
+  "name": "operon-protocol-monad",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Operon Protocol: Policy-Bounded Autonomous Agent Operator on Monad",
+  "scripts": {
+    "contracts:compile": "cd contracts && node ./node_modules/hardhat/internal/cli/cli.js compile",
+    "contracts:test": "cd contracts && node ./node_modules/hardhat/internal/cli/cli.js test",
+    "contracts:deploy": "cd contracts && node ./node_modules/hardhat/internal/cli/cli.js run scripts/deploy.js",
+    "contracts:deploy:monad": "cd contracts && node ./node_modules/hardhat/internal/cli/cli.js run scripts/deploy.js --network monadTestnet",
+    "web:dev": "cd web && pnpm run dev",
+    "web:build": "cd web && pnpm run build"
+  }
+}

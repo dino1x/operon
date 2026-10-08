@@ -1,0 +1,19 @@
+{
+  "name": "operon-agent-runner",
+  "version": "1.0.0",
+  "description": "Standalone Autonomous Agent Runner for Operon Protocol on Monad",
+  "main": "dist/runner.js",
+  "scripts": {
+    "start": "ts-node src/runner.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "viem": "^2.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
+}
