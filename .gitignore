@@ -1,23 +1,7 @@
-# Dependencies
 node_modules
-.pnpm-store
-
-# Hardhat & Contracts
-contracts/cache
-contracts/artifacts
-contracts/dist
-
-# Next.js & Frontend
-web/.next
-web/out
-web/dist
-
-# Environment variables & secrets
-.env
+.next
+.turbo
+dist
+cache
 .env.local
-.env.*.local
-*.pem
-
-# OS metadata
 .DS_Store
-Thumbs.db
