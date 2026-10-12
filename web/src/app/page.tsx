@@ -8,6 +8,7 @@ import { AgentTerminal } from "../components/AgentTerminal";
 import { TelemetryVisualizer } from "../components/TelemetryVisualizer";
 import { KeyDelegationTopology } from "../components/KeyDelegationTopology";
 import { ParallelExecutionCanvas } from "../components/ParallelExecutionCanvas";
+import { WebAuthnEnclaveStation } from "../components/WebAuthnEnclaveStation";
 import { PasskeyAccount, getStoredPasskey } from "../lib/webauthn";
 import { SessionKeyInfo, loadStoredSessions } from "../lib/sessionKeys";
 import { AgentTaskResult } from "../lib/agentRunner";
@@ -125,6 +126,9 @@ export default function Home() {
           sessions={sessions}
           circuitBreakerActive={circuitBreakerActive}
         />
+
+        {/* Centerpiece 3: Turnkey / Privy-Style WebAuthn Silicon Enclave Station */}
+        <WebAuthnEnclaveStation passkey={passkey} />
 
         {/* Primary Command Workstation (Split Grid) */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
