@@ -5,46 +5,27 @@
 @tailwind utilities;
 
 :root {
-  /* Operon Seamless Monolithic Terminal */
-  --operon-bg: #07080c;
-  --operon-sidebar: #0a0b10;
-  --operon-center: #08090d;
-  --operon-hairline: rgba(255, 255, 255, 0.07);
-  --operon-hairline-subtle: rgba(255, 255, 255, 0.04);
-  --operon-hairline-active: #836EF9;
-
-  /* Accents */
-  --operon-purple: #836EF9;
-  --operon-emerald: #00F59B;
-  --operon-cyan: #00F0FF;
-  --operon-amber: #FFB800;
-  --operon-ruby: #FF3B5C;
+  /* Gearbox Protocol Color Tokens (Extracted 1:1 from app.gearbox.finance/pools) */
+  --gb-canvas: #0d0e12;
+  --gb-surface: #14161f;
+  --gb-surface-elevated: #1a1d28;
+  --gb-border: rgba(255, 255, 255, 0.08);
+  --gb-border-hover: rgba(255, 255, 255, 0.16);
+  --gb-pink: #E1007E;
+  --gb-pink-hover: #ff1a8c;
+  --gb-pink-glow: rgba(225, 0, 126, 0.35);
 
   --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: 'JetBrains Mono', monospace;
 }
 
 body {
-  color: #e5e7eb;
-  background-color: var(--operon-bg);
+  color: #ffffff;
+  background-color: var(--gb-canvas);
   font-family: var(--font-sans);
   letter-spacing: -0.018em;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
-}
-
-/* Hairline borders - No rounded boxes */
-.hairline-b {
-  border-bottom: 1px solid var(--operon-hairline);
-}
-.hairline-t {
-  border-top: 1px solid var(--operon-hairline);
-}
-.hairline-r {
-  border-right: 1px solid var(--operon-hairline);
-}
-.hairline-l {
-  border-left: 1px solid var(--operon-hairline);
 }
 
 /* Tabular Mono */
@@ -54,40 +35,18 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
-/* Interactive list row without border */
-.operon-row {
-  transition: background-color 0.12s ease;
-}
-.operon-row:hover {
-  background-color: rgba(255, 255, 255, 0.025);
-}
-
-/* Minimal Action Pill */
-.operon-action-btn {
-  background-color: var(--operon-purple);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 11px;
-  border-radius: 4px;
-  padding: 6px 14px;
-  transition: all 0.12s ease;
-}
-.operon-action-btn:hover {
-  background-color: #9785ff;
-}
-
 /* Scrollbars */
 ::-webkit-scrollbar {
-  width: 3px;
-  height: 3px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: var(--gb-canvas);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 2px;
+  background: #252838;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--operon-purple);
+  background: var(--gb-pink);
 }
