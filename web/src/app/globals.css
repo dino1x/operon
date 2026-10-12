@@ -5,18 +5,17 @@
 @tailwind utilities;
 
 :root {
-  /* Operon Mission Control Tokens */
-  --operon-bg: #090a0f;
-  --operon-panel: #11131a;
-  --operon-panel-elevated: #171a24;
-  --operon-border: rgba(255, 255, 255, 0.08);
-  --operon-border-active: rgba(131, 110, 249, 0.4);
+  /* Operon Seamless Monolithic Terminal */
+  --operon-bg: #07080c;
+  --operon-sidebar: #0a0b10;
+  --operon-center: #08090d;
+  --operon-hairline: rgba(255, 255, 255, 0.07);
+  --operon-hairline-subtle: rgba(255, 255, 255, 0.04);
+  --operon-hairline-active: #836EF9;
 
-  /* Primary Brand: Monad Purple & Sub-Second Neon Emerald */
+  /* Accents */
   --operon-purple: #836EF9;
-  --operon-purple-glow: rgba(131, 110, 249, 0.35);
   --operon-emerald: #00F59B;
-  --operon-emerald-glow: rgba(0, 245, 155, 0.35);
   --operon-cyan: #00F0FF;
   --operon-amber: #FFB800;
   --operon-ruby: #FF3B5C;
@@ -26,85 +25,67 @@
 }
 
 body {
-  color: #ffffff;
+  color: #e5e7eb;
   background-color: var(--operon-bg);
   font-family: var(--font-sans);
   letter-spacing: -0.018em;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Institutional Terminal Dock Panels */
-.operon-dock-panel {
-  background-color: var(--operon-panel);
-  border: 1px solid var(--operon-border);
-  border-radius: 12px;
-  transition: border-color 0.15s ease, background-color 0.15s ease;
+/* Hairline borders - No rounded boxes */
+.hairline-b {
+  border-bottom: 1px solid var(--operon-hairline);
+}
+.hairline-t {
+  border-top: 1px solid var(--operon-hairline);
+}
+.hairline-r {
+  border-right: 1px solid var(--operon-hairline);
+}
+.hairline-l {
+  border-left: 1px solid var(--operon-hairline);
 }
 
-.operon-dock-panel:hover {
-  border-color: rgba(255, 255, 255, 0.14);
-}
-
-.operon-dock-header {
-  padding: 10px 14px;
-  border-bottom: 1px solid var(--operon-border);
-  background-color: rgba(255, 255, 255, 0.02);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Terminal Pill Buttons */
-.operon-pill-btn {
-  background-color: var(--operon-purple);
-  color: #ffffff;
-  font-weight: 700;
-  font-size: 11px;
-  border-radius: 6px;
-  padding: 6px 14px;
-  transition: all 0.15s ease;
-  box-shadow: 0 2px 10px var(--operon-purple-glow);
-}
-
-.operon-pill-btn:hover {
-  background-color: #9583ff;
-  transform: translateY(-1px);
-}
-
-.operon-ghost-btn {
-  background-color: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--operon-border);
-  color: #d1d5db;
-  font-size: 11px;
-  font-weight: 600;
-  border-radius: 6px;
-  padding: 5px 12px;
-  transition: all 0.15s ease;
-}
-
-.operon-ghost-btn:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.18);
-  color: #ffffff;
-}
-
-/* Numeric Mono */
+/* Tabular Mono */
 .font-mono-num {
   font-family: var(--font-mono);
   font-feature-settings: "tnum";
   font-variant-numeric: tabular-nums;
 }
 
+/* Interactive list row without border */
+.operon-row {
+  transition: background-color 0.12s ease;
+}
+.operon-row:hover {
+  background-color: rgba(255, 255, 255, 0.025);
+}
+
+/* Minimal Action Pill */
+.operon-action-btn {
+  background-color: var(--operon-purple);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 11px;
+  border-radius: 4px;
+  padding: 6px 14px;
+  transition: all 0.12s ease;
+}
+.operon-action-btn:hover {
+  background-color: #9785ff;
+}
+
 /* Scrollbars */
 ::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+  width: 3px;
+  height: 3px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--operon-bg);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #232636;
+  background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {

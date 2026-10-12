@@ -2,30 +2,19 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Shield,
+  Cpu,
   Fingerprint,
   Zap,
   Terminal,
   Activity,
-  Cpu,
   Layers,
   Lock,
   Play,
-  RotateCcw,
   CheckCircle2,
   AlertOctagon,
   Key,
-  ExternalLink,
-  ChevronRight,
   TrendingUp,
-  ShieldCheck,
-  Server,
-  Radio,
-  Sliders,
-  DollarSign,
-  Clock,
   RefreshCw,
-  Sparkles,
 } from "lucide-react";
 import {
   isWebAuthnAvailable,
@@ -39,7 +28,7 @@ import {
   loadStoredSessions,
   createSessionKey,
 } from "../lib/sessionKeys";
-import { AgentTaskResult, runAgentCycle } from "../lib/agentRunner";
+import { AgentTaskResult } from "../lib/agentRunner";
 import {
   playBiometricChirp,
   playMechanicalClick,
@@ -51,53 +40,43 @@ import { createPublicClient, http } from "viem";
 import { monadTestnet } from "../config/monad";
 
 export default function Home() {
-  // Master Passkey & Session States
   const [passkey, setPasskey] = useState<PasskeyAccount | null>(null);
-  const [hasWebAuthn, setHasWebAuthn] = useState(false);
-  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [sessions, setSessions] = useState<SessionKeyInfo[]>([]);
   const [circuitBreakerActive, setCircuitBreakerActive] = useState(false);
-
-  // Live Monad Cancun Block Telemetry
   const [currentBlock, setCurrentBlock] = useState<string>("70438102");
   const [latencyMs, setLatencyMs] = useState<number>(382);
 
-  // Interactive Sub-Key Scoper State
+  // Operator selection
   const [selectedAgentId, setSelectedAgentId] = useState<string>("kuru");
   const [spendCap, setSpendCap] = useState<string>("2.5");
   const [durationHours, setDurationHours] = useState<number>(2);
-  const [isAuthorizingKey, setIsAuthorizingKey] = useState<boolean>(false);
 
-  // Terminal Execution State
+  // Terminal REPL state
   const [prompt, setPrompt] = useState<string>(
     "Detect cross-pool price discrepancy and execute atomic parallel buy/sell orders on Monad Testnet."
   );
   const [isRunningIntent, setIsRunningIntent] = useState<boolean>(false);
   const [terminalLogs, setTerminalLogs] = useState<string[]>([
-    "[00:00.00] OPERON MESH: Monad Cancun Sovereign Coordinator initialized (Chain ID: 10143).",
-    "[00:00.01] HARDWARE ENCLAVE: RIP-7212 P-256 precompile mapped to address 0x100 (-98.3% gas).",
-    "[00:00.02] PARALLEL ENGINE: MonadBFT Pipelining active across 4 non-conflicting state lanes.",
-    "[00:00.03] READY: Awaiting intent dispatch or hardware passkey signature.",
+    "[00:00.00] OPERON MESH: Sovereign Agent Execution System (Monad Cancun · Chain 10143)",
+    "[00:00.01] ENCLAVE: Hardware RIP-7212 P-256 precompile mapped to address 0x100 (-98.3% gas)",
+    "[00:00.02] PARALLEL: MonadBFT Pipelining active across 4 independent non-conflicting state lanes",
+    "[00:00.03] STATUS: Online. Ready for natural language intent dispatch or passkey authorization",
   ]);
   const logEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Recent Executions
+  // Recent executions
   const [executions, setExecutions] = useState<AgentTaskResult[]>([]);
-
-  // Biometric Test Signature State
   const [biometricSignature, setBiometricSignature] = useState<{
     r: string;
     s: string;
-    verified: boolean;
   } | null>(null);
 
   useEffect(() => {
-    isWebAuthnAvailable().then(setHasWebAuthn);
+    isWebAuthnAvailable();
     setSessions(loadStoredSessions());
     const stored = getStoredPasskey();
     if (stored) setPasskey(stored);
 
-    // Live block listener on Monad Testnet
     const client = createPublicClient({
       chain: monadTestnet,
       transport: http("https://testnet-rpc.monad.xyz"),
@@ -111,9 +90,7 @@ export default function Home() {
           setCurrentBlock(b.toString());
           setLatencyMs(370 + Math.floor(Math.random() * 25));
         }
-      } catch {
-        // fallback
-      }
+      } catch {}
     };
 
     fetchBlock();
@@ -128,11 +105,10 @@ export default function Home() {
     logEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [terminalLogs]);
 
-  // Passkey Registration / Authentication
+  // Passkey Connect
   const handleConnectPasskey = async () => {
     try {
       playMechanicalClick();
-      setIsAuthenticating(true);
       const existing = getStoredPasskey();
       if (existing) {
         const authed = await authenticatePasskey();
@@ -155,51 +131,44 @@ export default function Home() {
       ]);
     } catch (err: any) {
       alert("Passkey Auth: " + (err?.message || "User cancelled"));
-    } finally {
-      setIsAuthenticating(false);
     }
   };
 
-  // Test Biometric Signature Simulation
+  // Simulate Biometric Sign
   const handleTestBiometricSign = () => {
     playBiometricChirp();
     const r = `0x${Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("")}`;
     const s = `0x${Array.from({ length: 64 }, () => Math.floor(Math.random() * 16).toString(16)).join("")}`;
-    setBiometricSignature({ r, s, verified: true });
+    setBiometricSignature({ r, s });
     setTerminalLogs((prev) => [
       ...prev,
-      `[HARDWARE] P-256 Biometric Signature generated via Apple Enclave.`,
+      `[HARDWARE] P-256 Signature generated via Apple Secure Enclave.`,
       `[RIP-7212] Precompile 0x100 verified secp256r1 signature in 12ms. Gas cost: 3,450 gas.`,
     ]);
   };
 
-  // Issue Scoped Sub-Key
+  // Issue Sub-Key
   const handleIssueSubKey = () => {
     playMechanicalClick();
-    setIsAuthorizingKey(true);
-    setTimeout(() => {
-      const agentNames: Record<string, string> = {
-        kuru: "Kuru CLOB Scalper v1.4",
-        t3tris: "T3tris Yield Harvester",
-        cassie: "Cassie Invariant Sentinel",
-      };
-      const agentName = agentNames[selectedAgentId] || "Autonomous Operator";
-      const newSession = createSessionKey(
-        `0x8004a11f0000000000000000000000000000000${selectedAgentId === "kuru" ? "1" : "2"}` as `0x${string}`,
-        agentName,
-        spendCap,
-        durationHours,
-        ["0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"]
-      );
-      setSessions((prev) => [...prev, newSession]);
-      setIsAuthorizingKey(false);
-      playBiometricChirp();
-      setTerminalLogs((prev) => [
-        ...prev,
-        `[SESSION] Issued scoped sub-key to ${agentName}. Spend Cap: ${spendCap} MON. Duration: ${durationHours}h.`,
-        `[POLICY] Zodiac-bounded invocation target: 0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9.`,
-      ]);
-    }, 400);
+    const agentNames: Record<string, string> = {
+      kuru: "Kuru CLOB Scalper v1.4",
+      t3tris: "T3tris Yield Harvester",
+      cassie: "Cassie Invariant Sentinel",
+    };
+    const agentName = agentNames[selectedAgentId] || "Autonomous Operator";
+    const newSession = createSessionKey(
+      `0x8004a11f0000000000000000000000000000000${selectedAgentId === "kuru" ? "1" : "2"}` as `0x${string}`,
+      agentName,
+      spendCap,
+      durationHours,
+      ["0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9"]
+    );
+    setSessions((prev) => [...prev, newSession]);
+    playBiometricChirp();
+    setTerminalLogs((prev) => [
+      ...prev,
+      `[SESSION] Issued sub-key to ${agentName}. Spend Cap: ${spendCap} MON. Expiry: ${durationHours}h.`,
+    ]);
   };
 
   // Dispatch Intent
@@ -214,15 +183,15 @@ export default function Home() {
     setIsRunningIntent(true);
     setTerminalLogs((prev) => [
       ...prev,
-      `\n>>> [DISPATCH] Intent: "${textToRun}"`,
-      `[1/4] Parsing intent -> mapping to Monad parallel state lanes...`,
+      `\n$ operon-exec --intent "${textToRun}"`,
+      `[1/4] Parsing intent -> scheduling into Monad parallel state lanes...`,
     ]);
 
     setTimeout(async () => {
       setTerminalLogs((prev) => [
         ...prev,
-        `[2/4] Verifying P-256 session policy bounds (Cap: ${spendCap} MON)... [PASS]`,
-        `[3/4] Synthesizing parallel transaction calldata -> MonadBFT Pipelining...`,
+        `[2/4] Validating P-256 session policy bounds (Spend Cap: ${spendCap} MON)... [PASS]`,
+        `[3/4] MonadBFT Parallel State Commitment...`,
       ]);
 
       try {
@@ -251,345 +220,269 @@ export default function Home() {
 
         setTerminalLogs((prev) => [
           ...prev,
-          `[4/4] MONAD EXECUTION RECEIPT: Block #${block.number} | Latency: 382ms | Gas: 42,150`,
-          `[SUCCESS] Tx Hash: ${txHash.slice(0, 16)}...${txHash.slice(-8)} (0 State Conflicts)`,
+          `[4/4] RECEIPT: Block #${block.number} | Latency: 382ms | Gas: 42,150 units`,
+          `[OK] TxHash: ${txHash.slice(0, 18)}... (0 State Conflicts)`,
         ]);
       } catch {
         setTerminalLogs((prev) => [
           ...prev,
-          `[4/4] MONAD LOCAL RECEIPT: Block #${currentBlock} | Latency: 385ms | Gas: 42,150`,
-          `[SUCCESS] Optimistic parallel transaction committed with 0 state conflicts.`,
+          `[4/4] RECEIPT: Block #${currentBlock} | Latency: 385ms | Gas: 42,150 units`,
+          `[OK] Parallel state transaction committed optimistically.`,
         ]);
       } finally {
         setIsRunningIntent(false);
       }
-    }, 600);
+    }, 500);
   };
 
-  // Toggle Circuit Breaker
+  // Circuit Breaker
   const handleToggleCircuitBreaker = () => {
     playCircuitBreakerAlarm();
     setCircuitBreakerActive((prev) => !prev);
     setTerminalLogs((prev) => [
       ...prev,
-      `[SECURITY] EMERGENCY CIRCUIT BREAKER ${!circuitBreakerActive ? "TRIPPED: ALL SUB-KEYS SUSPENDED" : "ARMED: NORMAL OPERATION"}`,
+      `[ALERT] CIRCUIT BREAKER ${!circuitBreakerActive ? "TRIPPED: ALL SUB-KEYS SUSPENDED" : "ARMED: NORMAL OPERATION"}`,
     ]);
   };
 
   return (
-    <div className="min-h-screen bg-[#090a0f] text-white flex flex-col font-sans antialiased selection:bg-[#836EF9]/30 selection:text-white">
-      {/* 1. TOP GLOBAL COMMAND BAR */}
-      <header className="h-14 border-b border-white/[0.08] bg-[#0d0f17] px-4 sm:px-6 flex items-center justify-between sticky top-0 z-50">
-        {/* Left: Brand Identity */}
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-[#836EF9] flex items-center justify-center shadow-[0_0_15px_rgba(131,110,249,0.4)]">
-              <Cpu className="w-4 h-4 text-white" />
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5 leading-none">
-                <span className="font-extrabold text-white text-base tracking-tight">OPERON</span>
-                <span className="font-bold text-[#836EF9] text-base tracking-tight">MESH</span>
-                <span className="text-[10px] px-1.5 py-0.5 rounded bg-white/[0.08] text-neutral-300 font-mono font-medium ml-1">
-                  v2.4
-                </span>
-              </div>
-              <span className="text-[10px] text-neutral-400 font-mono tracking-wider uppercase mt-0.5 block">
-                Sovereign Agent Enclave · Monad Cancun
-              </span>
-            </div>
+    <div className="min-h-screen bg-[#07080c] text-[#e5e7eb] flex flex-col font-sans selection:bg-[#836EF9]/30 selection:text-white">
+      {/* 1. TOP GLOBAL HAIRLINE STATUS BAR (No boxes, flush edge-to-edge) */}
+      <header className="h-11 hairline-b bg-[#090a0e] px-4 flex items-center justify-between sticky top-0 z-50 text-xs font-mono">
+        {/* Left: Brand & Network */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <Cpu className="w-3.5 h-3.5 text-[#836EF9]" />
+            <span className="font-bold tracking-wider text-white">OPERON</span>
+            <span className="text-neutral-500">/</span>
+            <span className="text-[#836EF9] font-bold">MESH</span>
           </div>
 
-          {/* Network & Sub-Second Finality Ticker */}
-          <div className="hidden lg:flex items-center gap-4 text-xs font-mono text-neutral-400 pl-4 border-l border-white/[0.08]">
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00F59B] animate-ping" />
-              <span>Block:</span>
-              <strong className="text-white font-mono-num font-bold">#{currentBlock}</strong>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-neutral-500">Latency:</span>
-              <span className="text-[#00F59B] font-bold font-mono-num">{latencyMs} ms</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-neutral-500">Parallel TPS:</span>
-              <span className="text-[#836EF9] font-bold font-mono-num">10,000 Target</span>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-neutral-500">Conflicts:</span>
-              <span className="text-[#00F59B] font-bold">0.00%</span>
-            </div>
+          <div className="h-3 w-px bg-white/10 hidden sm:block" />
+
+          <div className="hidden sm:flex items-center gap-1.5 text-neutral-400 text-[11px]">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B] animate-pulse" />
+            <span>Monad Cancun</span>
+            <span className="text-neutral-600">·</span>
+            <span>Block #{currentBlock}</span>
+            <span className="text-neutral-600">·</span>
+            <span className="text-[#00F59B]">{latencyMs}ms</span>
           </div>
         </div>
 
-        {/* Right Action Items */}
+        {/* Center: System Telemetry */}
+        <div className="hidden md:flex items-center gap-6 text-[11px] text-neutral-500">
+          <div>
+            PARALLEL TPS: <strong className="text-white font-mono-num">10,000</strong>
+          </div>
+          <div>
+            STATE CONFLICTS: <strong className="text-[#00F59B] font-mono-num">0.00%</strong>
+          </div>
+          <div>
+            PRECOMPILE: <strong className="text-[#836EF9]">0x100 (RIP-7212)</strong>
+          </div>
+        </div>
+
+        {/* Right: Security & Passkey */}
         <div className="flex items-center gap-3">
-          {/* Circuit Breaker Killswitch */}
           <button
             onClick={handleToggleCircuitBreaker}
-            className={`px-3 py-1 rounded-md text-xs font-mono font-bold transition-all border flex items-center gap-1.5 ${
+            className={`px-2 py-0.5 rounded text-[10px] font-bold transition-all flex items-center gap-1 ${
               circuitBreakerActive
-                ? "bg-rose-500/20 border-rose-500/50 text-rose-300 shadow-[0_0_12px_rgba(244,63,94,0.3)] animate-pulse"
-                : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:border-emerald-500/50"
+                ? "bg-rose-500/20 text-rose-300 animate-pulse border border-rose-500/40"
+                : "text-neutral-400 hover:text-white hover:bg-white/[0.04]"
             }`}
           >
-            <AlertOctagon className="w-3.5 h-3.5" />
-            <span>{circuitBreakerActive ? "CIRCUIT BREAKER: TRIPPED" : "CIRCUIT BREAKER: ARMED"}</span>
+            <AlertOctagon className="w-3 h-3 text-neutral-400" />
+            <span>{circuitBreakerActive ? "CIRCUIT BREAKER: TRIPPED" : "DEFCON 1: ARMED"}</span>
           </button>
 
-          {/* Master Passkey Authenticator */}
+          <div className="h-3 w-px bg-white/10" />
+
           {passkey ? (
-            <div className="flex items-center gap-2 px-3 py-1 rounded-md bg-[#171a24] border border-[#836EF9]/40 text-xs font-mono text-white">
-              <CheckCircle2 className="w-3.5 h-3.5 text-[#00F59B]" />
+            <div className="flex items-center gap-1.5 text-[11px] text-emerald-400">
+              <CheckCircle2 className="w-3 h-3" />
               <span>{passkey.address.slice(0, 6)}...{passkey.address.slice(-4)}</span>
-              <span className="text-[10px] text-neutral-400">(P-256)</span>
             </div>
           ) : (
             <button
               onClick={handleConnectPasskey}
-              disabled={isAuthenticating}
-              className="operon-pill-btn flex items-center gap-1.5"
+              className="text-[11px] text-[#836EF9] hover:text-[#9583ff] font-bold flex items-center gap-1"
             >
-              <Fingerprint className="w-3.5 h-3.5" />
-              <span>{isAuthenticating ? "Authenticating..." : "Connect Master Passkey"}</span>
+              <Fingerprint className="w-3 h-3" />
+              <span>Connect Passkey</span>
             </button>
           )}
         </div>
       </header>
 
-      {/* 2. INSTITUTIONAL 3-PANE MODULAR COCKPIT */}
-      <div className="flex-1 max-w-[1700px] w-full mx-auto p-4 sm:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-        {/* LEFT PANE (lg:col-span-4): FLEET ROSTER & SCOPED SUB-KEY ISSUER */}
-        <div className="lg:col-span-4 flex flex-col gap-6">
-          {/* Pane 1: Operator Fleet Roster */}
-          <div className="operon-dock-panel">
-            <div className="operon-dock-header">
-              <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4 text-[#836EF9]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  Autonomous Operator Fleet
-                </span>
+      {/* 2. SEAMLESS WORKSTATION (Edge-to-edge, separated only by hairline dividers, ZERO nested boxes) */}
+      <div className="flex-1 flex flex-col lg:flex-row items-stretch">
+        {/* LEFT COLUMN: OPERATOR DIRECTORY & POLICY (Width 310px, hairline-r, bg-[#0a0b10]) */}
+        <aside className="w-full lg:w-[310px] shrink-0 hairline-r bg-[#090a0f] flex flex-col">
+          {/* Section Header */}
+          <div className="py-2.5 px-4 hairline-b flex items-center justify-between text-[11px] font-mono text-neutral-400 uppercase tracking-wider">
+            <span>Operator Roster (3)</span>
+            <span className="text-[#00F59B] font-bold text-[10px]">ALL ACTIVE</span>
+          </div>
+
+          {/* Borderless Operator Directory */}
+          <div className="flex flex-col divide-y divide-white/[0.04] text-xs">
+            {/* Operator 1 */}
+            <div
+              onClick={() => setSelectedAgentId("kuru")}
+              className={`p-4 operon-row cursor-pointer transition-colors ${
+                selectedAgentId === "kuru" ? "bg-white/[0.04] border-l-2 border-[#836EF9]" : "border-l-2 border-transparent"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B]" />
+                  <span className="font-bold text-white">Kuru CLOB Scalper</span>
+                </div>
+                <span className="text-[10px] font-mono text-neutral-500">v1.4</span>
               </div>
-              <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono font-bold">
-                3 ONLINE
-              </span>
+              <p className="text-[11px] text-neutral-400 mt-1">
+                Sub-second limit orders on central orderbook
+              </p>
+              <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
+                <span className="text-neutral-500">Cap: 2.50 MON</span>
+                <span className="text-emerald-400 font-bold font-mono-num">+4.82 MON (24h)</span>
+              </div>
             </div>
 
-            <div className="p-4 flex flex-col gap-3 font-mono text-xs">
-              {/* Operator 1 */}
-              <div
-                onClick={() => setSelectedAgentId("kuru")}
-                className={`p-3.5 rounded-lg border transition-all cursor-pointer ${
-                  selectedAgentId === "kuru"
-                    ? "bg-[#171a24] border-[#836EF9] shadow-[0_0_12px_rgba(131,110,249,0.2)]"
-                    : "bg-[#12141c] border-white/[0.06] hover:border-white/[0.14]"
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[10px] text-[#836EF9] font-bold block">OPERATOR 01</span>
-                    <span className="text-white font-bold font-sans text-sm block">
-                      Kuru CLOB Scalper v1.4
-                    </span>
-                    <span className="text-[11px] text-neutral-400 font-sans block mt-0.5">
-                      High-frequency limit order arbitrage
-                    </span>
-                  </div>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold">
-                    ACTIVE
-                  </span>
+            {/* Operator 2 */}
+            <div
+              onClick={() => setSelectedAgentId("t3tris")}
+              className={`p-4 operon-row cursor-pointer transition-colors ${
+                selectedAgentId === "t3tris" ? "bg-white/[0.04] border-l-2 border-[#836EF9]" : "border-l-2 border-transparent"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B]" />
+                  <span className="font-bold text-white">T3tris Yield Harvester</span>
                 </div>
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex justify-between text-[11px]">
-                  <span className="text-neutral-500">Cap: 2.50 MON</span>
-                  <span className="text-emerald-400 font-bold font-mono-num">+4.82 MON PnL</span>
-                </div>
+                <span className="text-[10px] font-mono text-neutral-500">v2.1</span>
               </div>
-
-              {/* Operator 2 */}
-              <div
-                onClick={() => setSelectedAgentId("t3tris")}
-                className={`p-3.5 rounded-lg border transition-all cursor-pointer ${
-                  selectedAgentId === "t3tris"
-                    ? "bg-[#171a24] border-[#836EF9] shadow-[0_0_12px_rgba(131,110,249,0.2)]"
-                    : "bg-[#12141c] border-white/[0.06] hover:border-white/[0.14]"
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[10px] text-[#00F59B] font-bold block">OPERATOR 02</span>
-                    <span className="text-white font-sans font-bold text-sm block">
-                      T3tris Yield Harvester
-                    </span>
-                    <span className="text-[11px] text-neutral-400 font-sans block mt-0.5">
-                      Algorithmic credit tranche rebalancing
-                    </span>
-                  </div>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-bold">
-                    ACTIVE
-                  </span>
-                </div>
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex justify-between text-[11px]">
-                  <span className="text-neutral-500">Allocated: 25.0 MON</span>
-                  <span className="text-[#00F59B] font-bold font-mono-num">HF: 1.94 (Safe)</span>
-                </div>
+              <p className="text-[11px] text-neutral-400 mt-1">
+                Algorithmic senior tranche rebalancing
+              </p>
+              <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
+                <span className="text-neutral-500">Draw: 25.0 MON</span>
+                <span className="text-[#836EF9] font-bold font-mono-num">HF: 1.94 Safe</span>
               </div>
+            </div>
 
-              {/* Operator 3 */}
-              <div
-                onClick={() => setSelectedAgentId("cassie")}
-                className={`p-3.5 rounded-lg border transition-all cursor-pointer ${
-                  selectedAgentId === "cassie"
-                    ? "bg-[#171a24] border-[#836EF9] shadow-[0_0_12px_rgba(131,110,249,0.2)]"
-                    : "bg-[#12141c] border-white/[0.06] hover:border-white/[0.14]"
-                }`}
-              >
-                <div className="flex items-start justify-between">
-                  <div>
-                    <span className="text-[10px] text-cyan-400 font-bold block">OPERATOR 03</span>
-                    <span className="text-white font-sans font-bold text-sm block">
-                      Cassie Invariant Sentinel
-                    </span>
-                    <span className="text-[11px] text-neutral-400 font-sans block mt-0.5">
-                      Pre-signing toxic calldata inspection
-                    </span>
-                  </div>
-                  <span className="text-[10px] px-1.5 py-0.5 rounded bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-bold">
-                    MONITORING
-                  </span>
+            {/* Operator 3 */}
+            <div
+              onClick={() => setSelectedAgentId("cassie")}
+              className={`p-4 operon-row cursor-pointer transition-colors ${
+                selectedAgentId === "cassie" ? "bg-white/[0.04] border-l-2 border-[#836EF9]" : "border-l-2 border-transparent"
+              }`}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                  <span className="font-bold text-white">Cassie Invariant Sentinel</span>
                 </div>
-                <div className="mt-3 pt-2 border-t border-white/[0.06] flex justify-between text-[11px]">
-                  <span className="text-neutral-500">RIP-7212 Precompile</span>
-                  <span className="text-cyan-400 font-bold font-mono-num">0 Toxic Orders</span>
-                </div>
+                <span className="text-[10px] font-mono text-neutral-500">TEE</span>
+              </div>
+              <p className="text-[11px] text-neutral-400 mt-1">
+                Pre-signing risk and toxic order detection
+              </p>
+              <div className="mt-2 flex items-center justify-between text-[10px] font-mono">
+                <span className="text-neutral-500">RIP-7212 Precompile</span>
+                <span className="text-cyan-400 font-bold">0 Violations</span>
               </div>
             </div>
           </div>
 
-          {/* Pane 2: Bounded Sub-Key Policy Scoper */}
-          <div className="operon-dock-panel p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <div className="flex items-center gap-2">
-                <Key className="w-4 h-4 text-[#836EF9]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  Issue Scoped Sub-Key
-                </span>
-              </div>
-              <span className="text-[10px] text-neutral-400 font-mono">Zodiac Policy Bounds</span>
+          {/* Sub-Key Policy Scoper Section (Seamless, no card wrapper) */}
+          <div className="hairline-t p-4 flex flex-col gap-3 font-mono text-xs mt-auto">
+            <div className="text-[11px] text-neutral-400 uppercase tracking-wider">
+              Issue Scoped Sub-Key
             </div>
 
-            <div className="space-y-3 font-mono text-xs">
-              <div className="space-y-1">
-                <div className="flex justify-between text-neutral-400 text-[11px]">
-                  <span>MAX MON SPEND CAP / CALL</span>
-                  <span className="text-white font-bold">{spendCap} MON</span>
-                </div>
-                <input
-                  type="range"
-                  min="0.5"
-                  max="10.0"
-                  step="0.5"
-                  value={spendCap}
-                  onChange={(e) => setSpendCap(e.target.value)}
-                  className="w-full accent-[#836EF9] cursor-pointer"
-                />
+            <div className="space-y-1">
+              <div className="flex justify-between text-[11px] text-neutral-400">
+                <span>Spend Limit:</span>
+                <span className="text-white font-bold">{spendCap} MON / call</span>
               </div>
-
-              <div className="space-y-1">
-                <span className="text-neutral-400 text-[11px] block">EXPIRATION DURATION</span>
-                <div className="grid grid-cols-4 gap-2">
-                  {[1, 2, 6, 24].map((h) => (
-                    <button
-                      key={h}
-                      onClick={() => setDurationHours(h)}
-                      className={`py-1.5 rounded text-center transition-all ${
-                        durationHours === h
-                          ? "bg-[#836EF9] text-white font-bold"
-                          : "bg-[#161822] text-neutral-400 hover:text-white"
-                      }`}
-                    >
-                      {h}h
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              <div className="p-3 rounded bg-[#12141c] border border-white/[0.04] text-[11px] text-neutral-300 space-y-1">
-                <div className="flex justify-between">
-                  <span className="text-neutral-500">Target DEX:</span>
-                  <span className="text-white">0xcf7e...0fc9 (Kuru)</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-neutral-500">Unbypassable Bound:</span>
-                  <span className="text-[#00F59B]">Deterministic EVM Revert</span>
-                </div>
-              </div>
-
-              <button
-                disabled={isAuthorizingKey || !passkey}
-                onClick={handleIssueSubKey}
-                className="w-full py-2.5 rounded-lg bg-[#836EF9] hover:bg-[#9583ff] text-white font-bold text-xs transition-all shadow-[0_0_15px_rgba(131,110,249,0.35)] disabled:opacity-40 flex items-center justify-center gap-1.5"
-              >
-                {isAuthorizingKey ? (
-                  <>
-                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
-                    <span>Signing Sub-Key via P-256...</span>
-                  </>
-                ) : (
-                  <>
-                    <Fingerprint className="w-3.5 h-3.5" />
-                    <span>Authorize Sub-Key ({spendCap} MON Cap)</span>
-                  </>
-                )}
-              </button>
+              <input
+                type="range"
+                min="0.5"
+                max="10.0"
+                step="0.5"
+                value={spendCap}
+                onChange={(e) => setSpendCap(e.target.value)}
+                className="w-full accent-[#836EF9] cursor-pointer"
+              />
             </div>
+
+            <div className="space-y-1">
+              <span className="text-[11px] text-neutral-400">Duration:</span>
+              <div className="grid grid-cols-4 gap-1 text-[11px]">
+                {[1, 2, 6, 24].map((h) => (
+                  <button
+                    key={h}
+                    onClick={() => setDurationHours(h)}
+                    className={`py-1 rounded transition-colors ${
+                      durationHours === h
+                        ? "bg-[#836EF9] text-white font-bold"
+                        : "bg-white/[0.04] text-neutral-400 hover:text-white"
+                    }`}
+                  >
+                    {h}h
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="text-[10px] text-neutral-500 space-y-0.5 pt-1">
+              <div>Target: 0xcf7e...0fc9 (Kuru DEX)</div>
+              <div>Boundary: Hard EVM Revert on Exceed</div>
+            </div>
+
+            <button
+              onClick={handleIssueSubKey}
+              className="mt-1 operon-action-btn w-full py-2 text-center"
+            >
+              Sign & Authorize Sub-Key &rarr;
+            </button>
           </div>
-        </div>
+        </aside>
 
-        {/* CENTER PANE (lg:col-span-5): PARALLEL SCHEDULER & AGENT COMMAND REPL */}
-        <div className="lg:col-span-5 flex flex-col gap-6">
-          {/* Top: Monad 4-Lane Parallel Execution Stream (60fps Canvas) */}
-          <div className="operon-dock-panel">
-            <div className="operon-dock-header">
+        {/* CENTER COLUMN: LIVE PARALLEL CANVAS & REPL CONSOLE (Flex-1, bg-[#07080c]) */}
+        <main className="flex-1 flex flex-col min-w-0">
+          {/* Top Stage: Living Parallel Execution Canvas (Runs directly across surface, NO card) */}
+          <div className="hairline-b p-4 bg-[#07080c]">
+            <div className="flex items-center justify-between text-xs font-mono mb-2 text-neutral-400">
               <div className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-[#00F59B]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  Monad Parallel Execution Pipeline
-                </span>
+                <Activity className="w-3.5 h-3.5 text-[#00F59B]" />
+                <span className="text-white font-bold">MONAD PARALLEL EXECUTION PIPELINE</span>
+                <span className="text-neutral-500">· 4 State Lanes</span>
               </div>
-              <span className="text-[10px] text-[#00F59B] font-mono font-bold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B] animate-pulse" />
-                <span>60 FPS Hardware Rendered</span>
-              </span>
+              <span className="text-[11px] text-[#00F59B]">60 FPS Compositor</span>
             </div>
 
-            <div className="p-4">
-              <ParallelExecutionCanvas executions={executions} />
-            </div>
+            <ParallelExecutionCanvas executions={executions} />
           </div>
 
-          {/* Bottom: Interactive Agent Intent REPL Terminal */}
-          <div className="operon-dock-panel flex flex-col">
-            <div className="operon-dock-header">
-              <div className="flex items-center gap-2">
-                <Terminal className="w-4 h-4 text-[#836EF9]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  Autonomous Operator REPL
-                </span>
-              </div>
-              <span className="text-[10px] text-neutral-400 font-mono">Chain ID: 10143</span>
-            </div>
+          {/* Bottom Stage: Integrated Interactive Command REPL */}
+          <div className="flex-1 flex flex-col min-h-[300px] bg-[#07080c]">
+            {/* Presets Bar */}
+            <div className="py-2 px-4 hairline-b bg-[#090a0f] flex flex-wrap items-center gap-2 text-xs font-mono">
+              <span className="text-neutral-500 text-[10px] uppercase">Presets:</span>
 
-            {/* Quick Presets */}
-            <div className="p-3 border-b border-white/[0.06] bg-[#0c0e15] flex flex-wrap gap-2">
               <button
                 onClick={() => {
                   setPrompt("Fire 4 concurrent limit orders across parallel Monad state lanes to verify optimistic execution.");
                   handleDispatchIntent("Fire 4 concurrent limit orders across parallel Monad state lanes to verify optimistic execution.");
                 }}
-                className="operon-ghost-btn text-[10px] flex items-center gap-1"
+                className="px-2 py-0.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300 hover:text-white text-[11px]"
               >
-                <Zap className="w-3 h-3 text-[#00F59B]" />
-                <span>4-Lane Parallel Stress Test</span>
+                [1] 4-Lane Parallel Stress Test
               </button>
 
               <button
@@ -597,38 +490,37 @@ export default function Home() {
                   setPrompt("Detect cross-pool price discrepancy and execute atomic parallel buy/sell orders on Monad Testnet.");
                   handleDispatchIntent("Detect cross-pool price discrepancy and execute atomic parallel buy/sell orders on Monad Testnet.");
                 }}
-                className="operon-ghost-btn text-[10px] flex items-center gap-1"
+                className="px-2 py-0.5 rounded bg-white/[0.04] hover:bg-white/[0.08] text-neutral-300 hover:text-white text-[11px]"
               >
-                <TrendingUp className="w-3 h-3 text-[#836EF9]" />
-                <span>Kuru vs T3tris Arbitrage</span>
+                [2] Arbitrage Kuru vs T3tris
               </button>
 
               <button
                 onClick={() => {
                   setTerminalLogs((prev) => [
                     ...prev,
-                    `\n>>> [SECURITY ALERT] Rogue Sub-Agent attempted transfer(0xdead, 100 MON)`,
-                    `[FIREWALL] Hard Revert: 0x71239bf CordonScopeEnforcer__UnauthorizedSelector(0xa9059cbb)`,
-                    `[RESULT] 0 Drain. Reputation Slashed -200 bps. State Invariant Preserved.`,
+                    `\n$ operon-test-hijack --target 0xdead --amount 100MON`,
+                    `[FIREWALL] Deterministic Revert: CordonScopeEnforcer__UnauthorizedSelector(0xa9059cbb)`,
+                    `[ZERO DRAIN] Transaction intercepted in 12ms. Reputation slashed -200 bps. Invariant preserved.`,
                   ]);
                 }}
-                className="operon-ghost-btn text-[10px] text-rose-400 hover:text-rose-300 border-rose-500/20"
+                className="px-2 py-0.5 rounded bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 text-[11px]"
               >
-                <span>Simulate Rogue Hijack</span>
+                [3] Simulate Rogue Revert
               </button>
             </div>
 
-            {/* Live Terminal Log Screen */}
-            <div className="p-4 bg-[#0a0b10] font-mono text-xs text-neutral-300 h-64 overflow-y-auto space-y-1 select-text">
+            {/* Live Scrolling Monospace Stream */}
+            <div className="flex-1 p-4 font-mono text-xs space-y-1 overflow-y-auto select-text leading-relaxed">
               {terminalLogs.map((log, index) => (
                 <div
                   key={index}
-                  className={`leading-relaxed ${
-                    log.includes("SUCCESS") || log.includes("Verified")
+                  className={`${
+                    log.includes("[OK]") || log.includes("Verified")
                       ? "text-[#00F59B] font-semibold"
-                      : log.includes("SECURITY") || log.includes("ALERT")
+                      : log.includes("FIREWALL") || log.includes("ALERT")
                       ? "text-rose-400 font-semibold"
-                      : log.includes("DISPATCH")
+                      : log.startsWith("$")
                       ? "text-[#836EF9] font-bold"
                       : "text-neutral-400"
                   }`}
@@ -639,9 +531,9 @@ export default function Home() {
               <div ref={logEndRef} />
             </div>
 
-            {/* Terminal Input Line */}
-            <div className="p-3 border-t border-white/[0.06] bg-[#0e1018] flex items-center gap-2">
-              <span className="text-[#836EF9] font-mono font-bold text-sm">&gt;</span>
+            {/* Input Prompt Line (Flush at bottom, no box) */}
+            <div className="hairline-t bg-[#090a0f] p-3 flex items-center gap-3">
+              <span className="font-mono text-[#836EF9] font-bold text-sm">operon@monad:~$</span>
               <input
                 type="text"
                 value={prompt}
@@ -649,13 +541,13 @@ export default function Home() {
                 onKeyDown={(e) => {
                   if (e.key === "Enter") handleDispatchIntent();
                 }}
-                placeholder="Type natural language intent for autonomous operator..."
+                placeholder="Type natural language operator intent or select a preset..."
                 className="flex-1 bg-transparent border-none text-xs font-mono text-white placeholder-neutral-500 focus:outline-none"
               />
               <button
                 disabled={isRunningIntent || circuitBreakerActive}
                 onClick={() => handleDispatchIntent()}
-                className="operon-pill-btn flex items-center gap-1.5 shrink-0"
+                className="operon-action-btn flex items-center gap-1.5 shrink-0"
               >
                 {isRunningIntent ? (
                   <RefreshCw className="w-3 h-3 animate-spin" />
@@ -666,95 +558,74 @@ export default function Home() {
               </button>
             </div>
           </div>
-        </div>
+        </main>
 
-        {/* RIGHT PANE (lg:col-span-3): HARDWARE ENCLAVE & T3TRIS VAULT */}
-        <div className="lg:col-span-3 flex flex-col gap-6">
-          {/* Hardware Enclave P-256 Card */}
-          <div className="operon-dock-panel p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <div className="flex items-center gap-2">
-                <Fingerprint className="w-4 h-4 text-[#836EF9]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  Apple Silicon Enclave
-                </span>
-              </div>
-              <span className="text-[10px] text-emerald-400 font-mono font-bold">P-256</span>
+        {/* RIGHT COLUMN: HARDWARE ENCLAVE & MEMPOOL TELEMETRY (Width 300px, hairline-l, bg-[#0a0b10]) */}
+        <aside className="w-full lg:w-[300px] shrink-0 hairline-l bg-[#090a0f] flex flex-col font-mono text-xs">
+          {/* Section 1: Apple Silicon Enclave */}
+          <div className="p-4 hairline-b flex flex-col gap-3">
+            <div className="text-[11px] text-neutral-400 uppercase tracking-wider flex items-center justify-between">
+              <span>Hardware Enclave</span>
+              <span className="text-[#836EF9]">P-256</span>
             </div>
 
-            <div className="flex flex-col items-center justify-center p-5 rounded-xl bg-[#12141c] border border-white/[0.06] space-y-3 text-center">
-              <div
-                onClick={handleTestBiometricSign}
-                className="w-16 h-16 rounded-full bg-[#836EF9]/10 border-2 border-[#836EF9]/40 flex items-center justify-center cursor-pointer hover:scale-105 transition-transform hover:shadow-[0_0_20px_rgba(131,110,249,0.35)]"
-              >
-                <Fingerprint className="w-8 h-8 text-[#836EF9]" />
+            <div
+              onClick={handleTestBiometricSign}
+              className="py-3 px-2 flex items-center gap-3 cursor-pointer hover:bg-white/[0.03] transition-colors rounded"
+            >
+              <div className="w-10 h-10 rounded-full bg-[#836EF9]/10 border border-[#836EF9]/30 flex items-center justify-center shrink-0">
+                <Fingerprint className="w-5 h-5 text-[#836EF9]" />
               </div>
               <div>
-                <span className="text-white font-bold text-xs block">
-                  Hardware WebAuthn Passkey
-                </span>
-                <span className="text-[10px] text-neutral-400 block mt-0.5">
-                  Click sensor to simulate Touch ID / Face ID
-                </span>
+                <span className="text-white font-bold text-xs block">Touch ID / Face ID</span>
+                <span className="text-[10px] text-neutral-400 block mt-0.5">Click to simulate signature</span>
               </div>
             </div>
 
-            {/* RIP-7212 Gas Savings Metric */}
-            <div className="space-y-2 text-xs font-mono">
-              <div className="flex justify-between py-1 border-b border-white/[0.04]">
-                <span className="text-neutral-400">Precompile:</span>
-                <span className="text-[#836EF9] font-bold">0x100 (RIP-7212)</span>
+            {/* Spec Sheet Table */}
+            <div className="text-[11px] space-y-1 text-neutral-400 pt-1">
+              <div className="flex justify-between">
+                <span>PRECOMPILE:</span>
+                <span className="text-white font-bold">0x100 (RIP-7212)</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-white/[0.04]">
-                <span className="text-neutral-400">P-256 Verification:</span>
+              <div className="flex justify-between">
+                <span>P-256 VERIFY:</span>
                 <span className="text-white font-bold">3,450 gas</span>
               </div>
-              <div className="flex justify-between py-1">
-                <span className="text-neutral-400">EVM Savings:</span>
-                <span className="text-[#00F59B] font-bold">-98.3% Cost</span>
+              <div className="flex justify-between">
+                <span>EVM SAVINGS:</span>
+                <span className="text-[#00F59B] font-bold">-98.3% cost</span>
               </div>
             </div>
 
             {biometricSignature && (
-              <div className="p-3 rounded bg-[#10121a] border border-[#836EF9]/30 text-[10px] font-mono space-y-1 animate-in fade-in">
-                <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>secp256r1 Verified on Monad</span>
-                </div>
-                <div className="text-neutral-400 truncate">r: {biometricSignature.r}</div>
-                <div className="text-neutral-400 truncate">s: {biometricSignature.s}</div>
+              <div className="p-2 bg-white/[0.02] text-[10px] text-neutral-400 space-y-0.5">
+                <div className="text-emerald-400 font-bold">Signature Validated (12ms)</div>
+                <div className="truncate">r: {biometricSignature.r}</div>
+                <div className="truncate">s: {biometricSignature.s}</div>
               </div>
             )}
           </div>
 
-          {/* T3tris Credit Vault Station */}
-          <div className="operon-dock-panel p-5 space-y-4">
-            <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
-              <div className="flex items-center gap-2">
-                <DollarSign className="w-4 h-4 text-[#00F59B]" />
-                <span className="font-bold text-xs uppercase tracking-wider text-white">
-                  T3tris Credit Vault
-                </span>
-              </div>
-              <span className="text-[10px] text-neutral-400 font-mono">Solvent</span>
+          {/* Section 2: T3tris Vault Solvency */}
+          <div className="p-4 hairline-b flex flex-col gap-2">
+            <div className="text-[11px] text-neutral-400 uppercase tracking-wider flex items-center justify-between">
+              <span>T3tris Vault Solvency</span>
+              <span className="text-[#00F59B]">142.8%</span>
             </div>
 
-            <div className="space-y-3 font-mono text-xs">
-              <div className="flex justify-between py-1 border-b border-white/[0.04]">
-                <span className="text-neutral-400">Senior Pool TVL:</span>
+            <div className="text-[11px] space-y-1 text-neutral-400">
+              <div className="flex justify-between">
+                <span>Allocated Credit:</span>
                 <span className="text-white font-bold font-mono-num">100.00 MON</span>
               </div>
-              <div className="flex justify-between py-1 border-b border-white/[0.04]">
-                <span className="text-neutral-400">Available Liquidity:</span>
+              <div className="flex justify-between">
+                <span>Available:</span>
                 <span className="text-[#00F59B] font-bold font-mono-num">75.00 MON</span>
-              </div>
-              <div className="flex justify-between py-1">
-                <span className="text-neutral-400">Solvency Ratio:</span>
-                <span className="text-white font-bold font-mono-num">142.80%</span>
               </div>
             </div>
 
-            <div className="pt-2 flex gap-2">
+            <div className="flex gap-2 pt-2">
               <button
                 onClick={() => {
                   playMechanicalClick();
@@ -763,7 +634,7 @@ export default function Home() {
                     `[VAULT] Drew 10.00 MON continuous credit line for active Operator Fleet.`,
                   ]);
                 }}
-                className="flex-1 py-2 rounded bg-white/[0.06] hover:bg-white/[0.12] text-white font-bold text-xs transition-all font-mono"
+                className="flex-1 py-1 rounded bg-white/[0.04] hover:bg-white/[0.08] text-white text-[11px] font-bold"
               >
                 Draw Credit
               </button>
@@ -775,13 +646,40 @@ export default function Home() {
                     `[VAULT] Supplied 25.00 MON to senior lending tranche. APY: 14.8%.`,
                   ]);
                 }}
-                className="flex-1 py-2 rounded bg-[#00F59B]/10 hover:bg-[#00F59B]/20 text-[#00F59B] border border-[#00F59B]/30 font-bold text-xs transition-all font-mono"
+                className="flex-1 py-1 rounded bg-[#00F59B]/10 hover:bg-[#00F59B]/20 text-[#00F59B] text-[11px] font-bold"
               >
                 Supply
               </button>
             </div>
           </div>
-        </div>
+
+          {/* Section 3: Live Verified Telemetry Stream */}
+          <div className="p-4 flex-1 flex flex-col gap-2">
+            <div className="text-[11px] text-neutral-400 uppercase tracking-wider">
+              Live Confirmed Stream
+            </div>
+
+            <div className="flex-1 space-y-2 overflow-y-auto text-[10px] text-neutral-400">
+              <div className="p-2 border-l border-[#00F59B]/40 bg-white/[0.01]">
+                <div className="text-white font-bold">Kuru Orderbook Match</div>
+                <div className="text-neutral-500">Block #{currentBlock} · 382ms</div>
+                <div className="text-[#00F59B]">Tx: 0x9c41...82a0 (0 Conflicts)</div>
+              </div>
+
+              <div className="p-2 border-l border-[#836EF9]/40 bg-white/[0.01]">
+                <div className="text-white font-bold">T3tris Tranche Harvest</div>
+                <div className="text-neutral-500">Block #{Number(currentBlock) - 1} · 384ms</div>
+                <div className="text-[#836EF9]">Tx: 0x3e18...44b1 (0 Conflicts)</div>
+              </div>
+
+              <div className="p-2 border-l border-cyan-400/40 bg-white/[0.01]">
+                <div className="text-white font-bold">Cassie Pre-flight Invariant</div>
+                <div className="text-neutral-500">Block #{Number(currentBlock) - 2} · 12ms</div>
+                <div className="text-cyan-400">Model Proof Verified</div>
+              </div>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   );
