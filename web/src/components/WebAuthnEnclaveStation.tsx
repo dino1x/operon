@@ -32,8 +32,8 @@ export const WebAuthnEnclaveStation: React.FC<WebAuthnEnclaveStationProps> = ({ 
           </div>
           <div>
             <h3 className="text-xs font-bold uppercase text-white tracking-wide flex items-center gap-2">
-              TURNKEY / PRIVY-STYLE WEBAUTHN HARDWARE ENCLAVE
-              <span className="text-[10px] px-2 py-0.5 rounded bg-[#836EF9]/15 text-[#836EF9] border border-[#836EF9]/30 font-bold lowercase">
+              WEBAUTHN SILICON HARDWARE ENCLAVE
+              <span className="text-[10px] px-2 py-0.5 rounded bg-[#836EF9]/15 text-[#836EF9] border border-[#836EF9]/30 font-bold uppercase">
                 eip-7212 precompile
               </span>
             </h3>
