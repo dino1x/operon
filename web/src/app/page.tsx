@@ -30,6 +30,7 @@ import {
   ArrowUpRight,
   Play,
   RotateCcw,
+  Bot,
 } from "lucide-react";
 
 const DEFAULT_POLICY_MANAGER = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512" as `0x${string}`;
@@ -72,88 +73,78 @@ export default function Home() {
   };
 
   return (
-    <main className="min-h-screen bg-[#010102] text-[#f7f8f8] flex flex-col font-sans selection:bg-[#5e6ad2]/40 selection:text-white">
-      {/* Top Application Header (Linear style) */}
+    <div className="min-h-screen bg-[#0c0d12] text-[#ffffff] font-sans flex flex-col antialiased selection:bg-[#836EF9]/30 selection:text-white">
+      {/* 1. TOP HEADER (Gearbox Agentic Navbar) */}
       <Header passkey={passkey} onPasskeyChange={setPasskey} />
 
-      {/* Control Strip & Workspace Subheader (Linear.app style) */}
-      <div className="border-b border-[#23252a] bg-[#08090a] px-4 sm:px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 sticky top-14 z-40">
-        {/* View Switchers */}
-        <div className="flex items-center gap-1 font-mono text-xs overflow-x-auto pb-1 sm:pb-0">
+      {/* Subheader Navigation Deck */}
+      <div className="h-14 border-b border-white/[0.08] bg-[#10121a] px-4 sm:px-8 flex items-center justify-between sticky top-14 z-40">
+        {/* Navigation Tabs with Active Underline */}
+        <nav className="flex items-center gap-6 text-sm font-semibold overflow-x-auto">
           <button
             onClick={() => setCurrentView("fleet")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`pb-1 transition-all whitespace-nowrap ${
               currentView === "fleet"
-                ? "bg-[#5e6ad2]/20 text-[#828fff] border border-[#5e6ad2]/50 shadow-[0_0_12px_rgba(94,106,210,0.2)]"
-                : "text-[#8a8f98] hover:text-white hover:bg-white/[0.04]"
+                ? "text-white border-b-2 border-[#836EF9]"
+                : "text-neutral-400 hover:text-white"
             }`}
           >
-            <Activity className="w-3.5 h-3.5 text-[#5e6ad2]" />
-            <span>Fleet Command</span>
+            Agentic Fleet
           </button>
 
           <button
             onClick={() => setCurrentView("parallel")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`pb-1 transition-all whitespace-nowrap ${
               currentView === "parallel"
-                ? "bg-[#00F59B]/15 text-[#00F59B] border border-[#00F59B]/40 shadow-[0_0_12px_rgba(0,245,155,0.15)]"
-                : "text-[#8a8f98] hover:text-white hover:bg-white/[0.04]"
+                ? "text-white border-b-2 border-[#836EF9]"
+                : "text-neutral-400 hover:text-white"
             }`}
           >
-            <Zap className="w-3.5 h-3.5 text-[#00F59B]" />
-            <span>Parallel Scheduler</span>
+            Parallel Canvas (10k TPS)
           </button>
 
           <button
             onClick={() => setCurrentView("enclave")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`pb-1 transition-all whitespace-nowrap ${
               currentView === "enclave"
-                ? "bg-[#5e6ad2]/20 text-[#828fff] border border-[#5e6ad2]/50 shadow-[0_0_12px_rgba(94,106,210,0.2)]"
-                : "text-[#8a8f98] hover:text-white hover:bg-white/[0.04]"
+                ? "text-white border-b-2 border-[#836EF9]"
+                : "text-neutral-400 hover:text-white"
             }`}
           >
-            <Fingerprint className="w-3.5 h-3.5 text-[#828fff]" />
-            <span>Silicon Enclave & Topology</span>
+            Silicon Enclave & Topology
           </button>
 
           <button
             onClick={() => setCurrentView("vault")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`pb-1 transition-all whitespace-nowrap ${
               currentView === "vault"
-                ? "bg-[#5e6ad2]/20 text-[#828fff] border border-[#5e6ad2]/50 shadow-[0_0_12px_rgba(94,106,210,0.2)]"
-                : "text-[#8a8f98] hover:text-white hover:bg-white/[0.04]"
+                ? "text-white border-b-2 border-[#836EF9]"
+                : "text-neutral-400 hover:text-white"
             }`}
           >
-            <Vault className="w-3.5 h-3.5 text-[#828fff]" />
-            <span>T3tris Vault</span>
+            T3tris Vault
           </button>
 
           <button
             onClick={() => setCurrentView("terminal")}
-            className={`flex items-center gap-2 px-3 py-1.5 rounded-md font-medium transition-all ${
+            className={`pb-1 transition-all whitespace-nowrap ${
               currentView === "terminal"
-                ? "bg-[#5e6ad2]/20 text-[#828fff] border border-[#5e6ad2]/50 shadow-[0_0_12px_rgba(94,106,210,0.2)]"
-                : "text-[#8a8f98] hover:text-white hover:bg-white/[0.04]"
+                ? "text-white border-b-2 border-[#836EF9]"
+                : "text-neutral-400 hover:text-white"
             }`}
           >
-            <Terminal className="w-3.5 h-3.5 text-[#828fff]" />
-            <span>Agent Terminal</span>
+            Agent Terminal
           </button>
-        </div>
+        </nav>
 
-        {/* Global Security & Protocol Status */}
-        <div className="flex items-center gap-3 font-mono text-xs">
-          <div className="hidden md:flex items-center gap-2 px-2.5 py-1 rounded-md bg-[#0f1011] border border-[#23252a] text-[#8a8f98]">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#00F59B] animate-ping" />
-            <span>Parallel EVM: 10,000 TPS</span>
-          </div>
-
+        {/* Global Circuit Breaker Action */}
+        <div className="flex items-center gap-3">
           <button
             onClick={handleToggleCircuitBreaker}
-            className={`px-2.5 py-1 rounded-md border text-[11px] font-medium transition-all ${
+            className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all border ${
               circuitBreakerActive
-                ? "bg-red-500/20 border-red-500/40 text-red-400 shadow-[0_0_12px_rgba(255,51,75,0.2)]"
-                : "bg-[#00F59B]/10 border-[#00F59B]/30 text-[#00F59B]"
+                ? "bg-rose-500/20 border-rose-500/50 text-rose-300"
+                : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"
             }`}
           >
             {circuitBreakerActive ? "CIRCUIT BREAKER: TRIPPED" : "CIRCUIT BREAKER: ARMED"}
@@ -161,127 +152,126 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Autonomous Fleet KPI Strip (Linear design system) */}
-      <section className="bg-[#08090a] border-b border-[#23252a] px-4 sm:px-6 py-3">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 font-mono">
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-[#62666d] uppercase tracking-wider block font-semibold">Autonomous Fleet</span>
-            <div className="flex items-center gap-2">
-              <span className="text-white font-semibold text-base">3 Active Operators</span>
-              <span className="text-[10px] text-[#00F59B] bg-[#00F59B]/10 px-1.5 py-0.5 rounded border border-[#00F59B]/20">HEALTHY</span>
-            </div>
+      {/* 2. MAIN WORKSPACE CONTAINER */}
+      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+        {/* Title & Status */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h1 className="text-3xl font-extrabold text-white tracking-tight">Agentic Command Center</h1>
+            <p className="text-xs sm:text-sm text-neutral-400 mt-1">
+              Sovereign WebAuthn P-256 passkeys governing bounded autonomous operator fleets on Monad
+            </p>
           </div>
 
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-[#62666d] uppercase tracking-wider block font-semibold">Credit Line Issued</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[#828fff] font-semibold text-base">100.00 MON</span>
-              <span className="text-[10px] text-[#8a8f98]">Advance Protocol</span>
-            </div>
-          </div>
-
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-[#62666d] uppercase tracking-wider block font-semibold">Parallel Conflict Rate</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[#00F59B] font-semibold text-base">0.00% (Isolated PTB)</span>
-              <span className="text-[10px] text-[#8a8f98]">0.4s Finality</span>
-            </div>
-          </div>
-
-          <div className="space-y-0.5">
-            <span className="text-[10px] text-[#62666d] uppercase tracking-wider block font-semibold">Hardware Attestation</span>
-            <div className="flex items-center gap-2">
-              <span className="text-[#7a7fad] font-semibold text-base">secp256r1 (P-256)</span>
-              <span className="text-[10px] text-[#8a8f98]">EIP-7212 Native</span>
-            </div>
+          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#14161f] border border-white/[0.08] text-xs font-mono text-neutral-300">
+            <span className="w-2 h-2 rounded-full bg-[#00F59B] animate-pulse" />
+            <span>Sub-Second Finality (~385ms)</span>
           </div>
         </div>
-      </section>
 
-      {/* Primary Workspace */}
-      <div className="flex-1 p-4 sm:p-6 flex flex-col gap-6 bg-[#010102]">
-        {/* View 1: Fleet Command (Default Showcase) */}
+        {/* Top 3 KPI Cards (Gearbox style) */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="operon-card p-5 space-y-1">
+            <span className="text-xs text-neutral-400 font-medium uppercase font-mono">Autonomous Fleet</span>
+            <div className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums">3 Active Operators</div>
+            <span className="text-[11px] text-[#00F59B] font-mono">100% Policy Compliant</span>
+          </div>
+
+          <div className="operon-card p-5 space-y-1">
+            <span className="text-xs text-neutral-400 font-medium uppercase font-mono">Credit Allocated</span>
+            <div className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums">100.00 MON</div>
+            <span className="text-[11px] text-[#836EF9] font-mono">Advance Continuous Credit</span>
+          </div>
+
+          <div className="operon-card p-5 space-y-1">
+            <span className="text-xs text-neutral-400 font-medium uppercase font-mono">State Conflicts</span>
+            <div className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums">0.00%</div>
+            <span className="text-[11px] text-[#00F59B] font-mono">Monad Parallel Partitioning</span>
+          </div>
+        </div>
+
+        {/* View 1: Fleet Command (Default) */}
         {currentView === "fleet" && (
           <div className="flex flex-col gap-6">
-            {/* Autonomous Fleet Cards Grid (Linear Cards) */}
+            {/* Active Operator Cards */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono">
-              {/* Agent Card 1 */}
-              <div className="linear-card rounded-xl p-4 border border-[#23252a] bg-[#0f1011] flex flex-col justify-between space-y-3 hover:border-[#5e6ad2]/50 transition-all">
+              {/* Operator 1 */}
+              <div className="operon-card p-5 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] text-[#828fff] font-medium uppercase tracking-wider">Agent 01</span>
-                    <h3 className="text-sm font-semibold text-white font-sans">Kuru High-Velocity Scalper</h3>
-                    <p className="text-[11px] text-[#8a8f98] font-sans">
-                      Executes sub-second limit orders on Kuru Central Limit Orderbook
+                    <span className="text-[10px] text-[#836EF9] font-bold uppercase">Operator 01</span>
+                    <h3 className="text-sm font-bold text-white font-sans">Kuru Scalper v1.4</h3>
+                    <p className="text-[11px] text-neutral-400 font-sans">
+                      Sub-second limit orders on Kuru Central Limit Orderbook
                     </p>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#00F59B]/10 text-[#00F59B] border border-[#00F59B]/30 font-semibold">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
                     ACTIVE
                   </span>
                 </div>
 
-                <div className="pt-2 border-t border-[#23252a] grid grid-cols-2 gap-2 text-[11px]">
+                <div className="pt-2 border-t border-white/[0.06] grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">24H PNL</span>
-                    <span className="text-[#00F59B] font-semibold tabular-nums">+4.82 MON</span>
+                    <span className="text-neutral-500 block text-[10px]">24H PNL</span>
+                    <span className="text-emerald-400 font-bold tabular-nums">+4.82 MON</span>
                   </div>
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">EXEC RATE</span>
-                    <span className="text-white font-semibold">120 Calls/Hr</span>
+                    <span className="text-neutral-500 block text-[10px]">EXEC RATE</span>
+                    <span className="text-white font-bold">120 Calls/Hr</span>
                   </div>
                 </div>
               </div>
 
-              {/* Agent Card 2 */}
-              <div className="linear-card rounded-xl p-4 border border-[#23252a] bg-[#0f1011] flex flex-col justify-between space-y-3 hover:border-[#5e6ad2]/50 transition-all">
+              {/* Operator 2 */}
+              <div className="operon-card p-5 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] text-[#828fff] font-medium uppercase tracking-wider">Agent 02</span>
-                    <h3 className="text-sm font-semibold text-white font-sans">T3tris Liquidity Rebalancer</h3>
-                    <p className="text-[11px] text-[#8a8f98] font-sans">
+                    <span className="text-[10px] text-[#00F59B] font-bold uppercase">Operator 02</span>
+                    <h3 className="text-sm font-bold text-white font-sans">T3tris Yield Rebalancer</h3>
+                    <p className="text-[11px] text-neutral-400 font-sans">
                       Automated yield rebalancing across permissionless credit vaults
                     </p>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#00F59B]/10 text-[#00F59B] border border-[#00F59B]/30 font-semibold">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
                     ACTIVE
                   </span>
                 </div>
 
-                <div className="pt-2 border-t border-[#23252a] grid grid-cols-2 gap-2 text-[11px]">
+                <div className="pt-2 border-t border-white/[0.06] grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">CREDIT DRAW</span>
-                    <span className="text-[#828fff] font-semibold tabular-nums">25.0 MON</span>
+                    <span className="text-neutral-500 block text-[10px]">CREDIT DRAW</span>
+                    <span className="text-[#836EF9] font-bold tabular-nums">25.0 MON</span>
                   </div>
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">HEALTH FACTOR</span>
-                    <span className="text-[#00F59B] font-semibold tabular-nums">1.94 (Safe)</span>
+                    <span className="text-neutral-500 block text-[10px]">HEALTH FACTOR</span>
+                    <span className="text-emerald-400 font-bold tabular-nums">1.94 (Safe)</span>
                   </div>
                 </div>
               </div>
 
-              {/* Agent Card 3 */}
-              <div className="linear-card rounded-xl p-4 border border-[#23252a] bg-[#0f1011] flex flex-col justify-between space-y-3 hover:border-[#5e6ad2]/50 transition-all">
+              {/* Operator 3 */}
+              <div className="operon-card p-5 space-y-3">
                 <div className="flex items-start justify-between">
                   <div className="space-y-1">
-                    <span className="text-[10px] text-[#7a7fad] font-medium uppercase tracking-wider">Agent 03</span>
-                    <h3 className="text-sm font-semibold text-white font-sans">Cassie Invariant Sentinel</h3>
-                    <p className="text-[11px] text-[#8a8f98] font-sans">
+                    <span className="text-[10px] text-cyan-400 font-bold uppercase">Operator 03</span>
+                    <h3 className="text-sm font-bold text-white font-sans">Cassie Invariant Sentinel</h3>
+                    <p className="text-[11px] text-neutral-400 font-sans">
                       Pre-signing risk and VaR evaluation preventing toxic order execution
                     </p>
                   </div>
-                  <span className="text-[10px] px-2 py-0.5 rounded bg-[#5e6ad2]/15 text-[#828fff] border border-[#5e6ad2]/30 font-semibold">
+                  <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#836EF9]/15 text-[#836EF9] border border-[#836EF9]/30 font-bold">
                     MONITORING
                   </span>
                 </div>
 
-                <div className="pt-2 border-t border-[#23252a] grid grid-cols-2 gap-2 text-[11px]">
+                <div className="pt-2 border-t border-white/[0.06] grid grid-cols-2 gap-2 text-[11px]">
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">EIP-7212 GAS</span>
-                    <span className="text-[#828fff] font-semibold tabular-nums">-98.3% Cost</span>
+                    <span className="text-neutral-500 block text-[10px]">EIP-7212 GAS</span>
+                    <span className="text-cyan-400 font-bold tabular-nums">-98.3% Cost</span>
                   </div>
                   <div>
-                    <span className="text-[#62666d] block text-[10px]">REFUSAL AUDIT</span>
-                    <span className="text-white font-semibold">ERC-8004</span>
+                    <span className="text-neutral-500 block text-[10px]">REFUSAL AUDIT</span>
+                    <span className="text-white font-bold">ERC-8004</span>
                   </div>
                 </div>
               </div>
@@ -376,7 +366,7 @@ export default function Home() {
             <TelemetryVisualizer executions={executions} />
           </div>
         )}
-      </div>
-    </main>
+      </main>
+    </div>
   );
 }
