@@ -25,19 +25,19 @@ export const WebAuthnEnclaveStation: React.FC<WebAuthnEnclaveStationProps> = ({ 
 
   return (
     <div className="tactile-card rounded-2xl p-5 flex flex-col gap-4 font-mono text-xs shadow-2xl">
-      <div className="flex flex-wrap items-center justify-between border-b border-white/[0.08] pb-3 gap-2">
+      <div className="flex flex-wrap items-center justify-between border-b border-[#23252a] pb-3 gap-2">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#836EF9]/15 border border-[#836EF9]/40 flex items-center justify-center">
-            <Fingerprint className="w-4 h-4 text-[#836EF9]" />
+          <div className="w-8 h-8 rounded-lg bg-[#5e6ad2]/15 border border-[#5e6ad2]/30 flex items-center justify-center">
+            <Fingerprint className="w-4 h-4 text-[#5e6ad2]" />
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase text-white tracking-wide flex items-center gap-2">
+            <h3 className="text-xs font-bold uppercase text-white tracking-wide flex items-center gap-2 font-sans">
               WEBAUTHN SILICON HARDWARE ENCLAVE
-              <span className="text-[10px] px-2 py-0.5 rounded bg-[#836EF9]/15 text-[#836EF9] border border-[#836EF9]/30 font-bold uppercase">
+              <span className="text-[10px] px-2 py-0.5 rounded bg-[#5e6ad2]/15 text-[#828fff] border border-[#5e6ad2]/30 font-bold uppercase font-mono">
                 eip-7212 precompile
               </span>
             </h3>
-            <p className="text-[11px] text-neutral-400">
+            <p className="text-[11px] text-[#8a8f98] font-sans">
               Hardware-backed cryptographic boundary: Master passkey never leaves Secure Enclave silicon
             </p>
           </div>
@@ -50,38 +50,38 @@ export const WebAuthnEnclaveStation: React.FC<WebAuthnEnclaveStationProps> = ({ 
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
         {/* Metric 1 */}
-        <div className="p-3.5 rounded-xl bg-[#090b14] border border-white/[0.06] space-y-1">
-          <span className="text-neutral-500 text-[10px] uppercase font-bold">Cryptographic Curve</span>
+        <div className="p-3.5 rounded-xl bg-[#141516] border border-[#23252a] space-y-1">
+          <span className="text-[#62666d] text-[10px] uppercase font-bold">Cryptographic Curve</span>
           <div className="text-white font-bold text-sm">secp256r1 (P-256)</div>
-          <span className="text-purple-300 text-[10px]">Native Hardware Signature</span>
+          <span className="text-[#828fff] text-[10px]">Native Hardware Signature</span>
         </div>
 
         {/* Metric 2 */}
-        <div className="p-3.5 rounded-xl bg-[#090b14] border border-white/[0.06] space-y-1">
-          <span className="text-neutral-500 text-[10px] uppercase font-bold">EIP-7212 Monad Precompile</span>
-          <div className="text-emerald-400 font-bold text-sm">3,450 Gas / Verify</div>
-          <span className="text-neutral-400 text-[10px]">Down from 210,000 gas</span>
+        <div className="p-3.5 rounded-xl bg-[#141516] border border-[#23252a] space-y-1">
+          <span className="text-[#62666d] text-[10px] uppercase font-bold">EIP-7212 Monad Precompile</span>
+          <div className="text-[#00F59B] font-bold text-sm">3,450 Gas / Verify</div>
+          <span className="text-[#8a8f98] text-[10px]">Down from 210,000 gas</span>
         </div>
 
         {/* Metric 3 */}
-        <div className="p-3.5 rounded-xl bg-[#090b14] border border-white/[0.06] space-y-1">
-          <span className="text-neutral-500 text-[10px] uppercase font-bold">Key Custody Architecture</span>
+        <div className="p-3.5 rounded-xl bg-[#141516] border border-[#23252a] space-y-1">
+          <span className="text-[#62666d] text-[10px] uppercase font-bold">Key Custody Architecture</span>
           <div className="text-[#00F59B] font-bold text-sm">Self-Custodial Silicon</div>
-          <span className="text-neutral-400 text-[10px]">Zero Cloud Seed Exposure</span>
+          <span className="text-[#8a8f98] text-[10px]">Zero Cloud Seed Exposure</span>
         </div>
       </div>
 
       {/* Attestation Check Bar */}
-      <div className="p-3.5 rounded-xl bg-[#0e101d] border border-[#836EF9]/20 flex flex-wrap items-center justify-between gap-3">
+      <div className="p-3.5 rounded-xl bg-[#141516] border border-[#5e6ad2]/20 flex flex-wrap items-center justify-between gap-3">
         <div className="space-y-0.5">
           <div className="text-white font-bold flex items-center gap-1.5 text-[11px]">
-            <Lock className="w-3.5 h-3.5 text-[#836EF9]" />
+            <Lock className="w-3.5 h-3.5 text-[#5e6ad2]" />
             <span>Master Public Key Coordinate:</span>
-            <span className="text-neutral-300 font-normal truncate max-w-xs">
+            <span className="text-[#8a8f98] font-normal truncate max-w-xs">
               {passkey ? passkey.address : "0x71c592bA4B3819d20c57659779262Cbb8a0499a2"}
             </span>
           </div>
-          <div className="text-[10px] text-neutral-400">
+          <div className="text-[10px] text-[#8a8f98]">
             {attestationStatus || "Enclave status verified: WebAuthn authenticator attached to current device."}
           </div>
         </div>
@@ -89,9 +89,9 @@ export const WebAuthnEnclaveStation: React.FC<WebAuthnEnclaveStationProps> = ({ 
         <button
           onClick={handleVerifyEnclave}
           disabled={isVerifyingEnclave}
-          className="px-3.5 py-1.5 rounded-lg bg-[#836EF9]/20 hover:bg-[#836EF9]/30 text-purple-200 border border-[#836EF9]/40 font-bold text-[11px] transition-all flex items-center gap-1.5"
+          className="px-3.5 py-1.5 rounded-lg bg-[#5e6ad2]/20 hover:bg-[#5e6ad2]/30 text-[#828fff] border border-[#5e6ad2]/40 font-bold text-[11px] transition-all flex items-center gap-1.5"
         >
-          {isVerifyingEnclave ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5" />}
+          {isVerifyingEnclave ? <RefreshCw className="w-3.5 h-3.5 animate-spin" /> : <Sparkles className="w-3.5 h-3.5 text-[#828fff]" />}
           <span>Verify Silicon Attestation</span>
         </button>
       </div>
