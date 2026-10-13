@@ -519,7 +519,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* The Gearbox Primary Table */}
+            {/* Primary Operator Table */}
             <div className="bg-[#14161f] border border-white/[0.08] rounded-2xl overflow-hidden">
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
