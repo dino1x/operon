@@ -271,8 +271,9 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#0d0e12] text-white flex flex-col font-sans antialiased selection:bg-[#E1007E]/30 selection:text-white">
       {/* 1. TOP HEADER (Exact 1:1 Gearbox Protocol Navigation Benchmark) */}
-      <header className="h-16 border-b border-white/[0.08] bg-[#0d0e12] px-4 sm:px-8 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex items-center gap-8">
+      <header className="border-b border-white/[0.08] bg-[#0d0e12]/95 backdrop-blur-md sticky top-0 z-50">
+        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-8">
           {/* Logo */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setActiveTab("fleet")}>
             <div className="w-8 h-8 rounded-full bg-[#E1007E] flex items-center justify-center shadow-[0_0_16px_rgba(225,0,126,0.4)]">
@@ -383,11 +384,12 @@ export default function Home() {
               <span>{isAuthenticating ? "Connecting..." : "Connect Master Passkey"}</span>
             </button>
           )}
+          </div>
         </div>
       </header>
 
       {/* 2. SUB-HEADER BANNER & 3 METRIC CARDS (Exact 1:1 Gearbox Structure) */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-8 py-8 flex flex-col gap-6">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto px-6 sm:px-8 py-8 flex flex-col gap-6">
         {/* Title & Subtitle */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
@@ -743,8 +745,8 @@ export default function Home() {
       </main>
 
       {/* 3. FOOTER (Exact Gearbox Footer Reference) */}
-      <footer className="border-t border-white/[0.08] bg-[#0d0e12] px-4 sm:px-8 py-5 mt-auto">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
+      <footer className="border-t border-white/[0.08] bg-[#0d0e12] mt-auto">
+        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <div>© Operon Protocol, 2026 · Monad Metropolis Global Hackathon</div>
           <div className="flex items-center gap-6">
             <span className="hover:text-white cursor-pointer">Docs</span>
