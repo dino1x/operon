@@ -3,5 +3,10 @@ node_modules
 .turbo
 dist
 cache
+.env
 .env.local
+.env.*
+artifacts
+typechain-types
+cache
 .DS_Store
