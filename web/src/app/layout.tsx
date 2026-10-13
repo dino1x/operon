@@ -1,9 +1,18 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Operon Mesh | Sovereign Agent Coordination Enclave on Monad",
   description: "WebAuthn P-256 Passkeys governing bounded autonomous operator fleets with sub-second parallel execution on Monad",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
+  themeColor: "#0d0e12",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({

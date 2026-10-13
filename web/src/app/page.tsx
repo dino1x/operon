@@ -386,12 +386,68 @@ export default function Home() {
         </div>
       </header>
 
+      {/* Mobile Swipeable Tab Bar for All Small Devices */}
+      <div className="md:hidden border-b border-white/[0.08] bg-[#14161f]/95 backdrop-blur-md sticky top-16 z-40 px-4 py-2 flex items-center gap-2 overflow-x-auto no-scrollbar touch-scroll">
+        <button
+          onClick={() => {
+            playTick();
+            setActiveTab("fleet");
+          }}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            activeTab === "fleet"
+              ? "bg-[#E1007E] text-white shadow-sm"
+              : "text-neutral-400 bg-white/[0.04] hover:text-white"
+          }`}
+        >
+          Agentic Fleet
+        </button>
+        <button
+          onClick={() => {
+            playTick();
+            setActiveTab("parallel");
+          }}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            activeTab === "parallel"
+              ? "bg-[#E1007E] text-white shadow-sm"
+              : "text-neutral-400 bg-white/[0.04] hover:text-white"
+          }`}
+        >
+          Parallel Pipeline
+        </button>
+        <button
+          onClick={() => {
+            playTick();
+            setActiveTab("enclave");
+          }}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            activeTab === "enclave"
+              ? "bg-[#E1007E] text-white shadow-sm"
+              : "text-neutral-400 bg-white/[0.04] hover:text-white"
+          }`}
+        >
+          Silicon Enclave
+        </button>
+        <button
+          onClick={() => {
+            playTick();
+            setActiveTab("vault");
+          }}
+          className={`px-3 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${
+            activeTab === "vault"
+              ? "bg-[#E1007E] text-white shadow-sm"
+              : "text-neutral-400 bg-white/[0.04] hover:text-white"
+          }`}
+        >
+          Credit Vault
+        </button>
+      </div>
+
       {/* 2. SUB-HEADER BANNER & 3 METRIC CARDS */}
-      <main className="flex-1 max-w-[1440px] w-full mx-auto px-6 sm:px-8 py-8 flex flex-col gap-6">
+      <main className="flex-1 max-w-[1440px] w-full mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 flex flex-col gap-6">
         {/* Title & Subtitle */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
               {activeTab === "fleet" && "Autonomous Operator Fleets"}
               {activeTab === "parallel" && "Monad Parallel Execution Pipeline"}
               {activeTab === "enclave" && "Apple Silicon Enclave & RIP-7212"}
