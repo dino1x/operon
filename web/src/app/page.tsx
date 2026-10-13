@@ -742,7 +742,7 @@ export default function Home() {
         )}
       </main>
 
-      {/* 3. FOOTER (Exact Gearbox Footer Reference) */}
+      {/* 3. FOOTER */}
       <footer className="border-t border-white/[0.08] bg-[#0d0e12] mt-auto">
         <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-8 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-neutral-500">
           <div>© Operon Protocol, 2026 · Monad Metropolis Global Hackathon</div>
