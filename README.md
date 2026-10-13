@@ -11,6 +11,18 @@
 
 ---
 
+### Verified Monad Testnet Deployments (Chain ID: 10143)
+
+| Contract | Address | Explorer Link |
+| :--- | :--- | :--- |
+| **OperonRegistryERC8004** | `0xb86d25cd0317de545c8573f040a589c34a093544` | [View on MonadExplorer](https://testnet.monadexplorer.com/address/0xb86d25cd0317de545c8573f040a589c34a093544) |
+| **OperonPolicyManager** | `0xf6ee349a29c99d431640c9be572e55bf435fad64` | [View on MonadExplorer](https://testnet.monadexplorer.com/address/0xf6ee349a29c99d431640c9be572e55bf435fad64) |
+| **TestOrderBook (Kuru DEX)** | `0x735a4896e13f954dfdbe1d807509d2ef29c0ed36` | [View on MonadExplorer](https://testnet.monadexplorer.com/address/0x735a4896e13f954dfdbe1d807509d2ef29c0ed36) |
+| **TestMON** | `0xe61b55102ed0c3f0425556db522503c6bc351ad5` | [View on MonadExplorer](https://testnet.monadexplorer.com/address/0xe61b55102ed0c3f0425556db522503c6bc351ad5) |
+| **Deployer / Curator (dino)** | `0x5222A33A4CaBC993F8354b9fCfD753Cc8C1439FA` | [View on MonadExplorer](https://testnet.monadexplorer.com/address/0x5222A33A4CaBC993F8354b9fCfD753Cc8C1439FA) |
+
+---
+
 ## Inspiration & The Problem We Solve
 Autonomous AI agents are the primary consumers of high-throughput blockchains. However, existing onchain agent architectures face critical roadblocks that recent agent hackathon winners (T3tris, Advance, Cassie) proved must be solved:
 1. **The Capital Allocation Problem (T3tris):** Who gives an agent money? Exposing a personal hot wallet with raw private keys invites drain attacks. Operon implements **permissionless liquidity vaults** where human depositors earn yield while smart contracts programmatically isolate principal.
