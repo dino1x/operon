@@ -70,6 +70,8 @@ export function playMechanicalClick() {
   osc.stop(now + 0.04);
 }
 
+export const playTick = playMechanicalClick;
+
 /**
  * Transaction confirmed chime on Monad (harmonic pleasant dual chime)
  */
@@ -97,6 +99,8 @@ export function playTxConfirmed() {
     osc.stop(now + idx * 0.06 + 0.3);
   });
 }
+
+export const playOrderSubmit = playTxConfirmed;
 
 /**
  * Emergency Circuit Breaker trip (urgent low-frequency warning tone)
