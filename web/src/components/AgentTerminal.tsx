@@ -67,7 +67,7 @@ export const AgentTerminal: React.FC<AgentTerminalProps> = ({
     setLogs((prev) => [
       ...prev,
       `[ALERT] Adversarial Prompt Injection detected in agent input stream!`,
-      `[CASSIE_INSPECTOR] Pre-flight audit flagged: Requested spend (500 MON) exceeds cap (2.5 MON). Target is unauthorized.`,
+      `[OPERON_INSPECTOR] Pre-flight audit flagged: Requested spend (500 MON) exceeds cap (2.5 MON). Target is unauthorized.`,
     ]);
   };
 
@@ -342,20 +342,20 @@ export const AgentTerminal: React.FC<AgentTerminalProps> = ({
           onClick={handleSimulateHijack}
           disabled={isRunning || isStressTesting}
           className="py-3 px-3 rounded-xl bg-red-950/20 hover:bg-red-950/40 text-red-400 active:scale-[0.99] transition-all font-mono text-xs font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 border border-red-500/30 group"
-          title="Simulate prompt injection and verify onchain revert defense (Advance & Cordon Primitive)"
+          title="Simulate prompt injection and verify onchain revert defense"
         >
           <RotateCcw className="w-3.5 h-3.5 group-hover:-rotate-90 transition-transform" />
           <span>Simulate Hijack</span>
         </button>
       </div>
 
-      {/* Cassie Pre-Flight Inspector & Adversarial Revert Defense Banner */}
+      {/* Operon Pre-Flight Inspector & Adversarial Revert Defense Banner */}
       {isAdversarial && (
         <div className="p-4 rounded-xl bg-red-950/15 border border-red-500/40 flex flex-col gap-3">
           <div className="flex items-center justify-between text-xs font-mono font-bold text-red-400">
             <span className="flex items-center gap-2">
               <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
-              CASSIE PRE-FLIGHT POLICY AUDIT (VIOLATION DETECTED)
+              OPERON PRE-FLIGHT POLICY AUDIT (VIOLATION DETECTED)
             </span>
             <span className="px-2 py-0.5 rounded bg-red-500/20 border border-red-500/40 text-[10px]">
               EVM LOCK ENGAGED

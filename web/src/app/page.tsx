@@ -72,7 +72,7 @@ export default function Home() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [circuitBreakerActive, setCircuitBreakerActive] = useState(false);
 
-  // Filters (Gearbox style)
+  // Filters
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -99,46 +99,46 @@ export default function Home() {
       name: "Kuru CLOB Scalper v1.4",
       strategy: "Sub-Second Limit Order Arbitrage",
       category: "HFT",
-      curator: "Advance Risk Engine",
+      curator: "Operon Risk Engine",
       enclaveType: "Apple P-256",
       spendCap: "2.50 MON / call",
       creditAllocated: "25.00 MON",
       pnl24h: "+4.82 MON",
       pnlPositive: true,
-      targetContract: "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+      targetContract: "0x735a4896e13f954dfdbe1d807509d2ef29c0ed36",
       targetName: "Kuru Central Orderbook",
       status: "ACTIVE",
       callsPerHr: 120,
     },
     {
       id: "op-2",
-      name: "T3tris Tranche Harvester",
+      name: "Alpha Tranche Harvester",
       strategy: "Algorithmic Senior Tranche Rebalancing",
       category: "Arbitrage",
-      curator: "T3tris Automated Labs",
-      enclaveType: "Zodiac Scoped",
+      curator: "Operon Vault Labs",
+      enclaveType: "Passkey Scoped",
       spendCap: "5.00 MON / call",
       creditAllocated: "50.00 MON",
       pnl24h: "+11.45 MON",
       pnlPositive: true,
-      targetContract: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
-      targetName: "T3tris Credit Vault",
+      targetContract: "0xf6ee349a29c99d431640c9be572e55bf435fad64",
+      targetName: "Operon Policy Manager",
       status: "ACTIVE",
       callsPerHr: 18,
     },
     {
       id: "op-3",
-      name: "Cassie Invariant Sentinel",
+      name: "Invariant Policy Sentinel",
       strategy: "Pre-Signing Risk & Toxic Order Interception",
       category: "Sentinel",
-      curator: "Cassie Zero-Egress TEE",
+      curator: "Zero-Egress Enclave",
       enclaveType: "TEE Enclave",
       spendCap: "0.00 MON (Read/Sim)",
       creditAllocated: "0.00 MON",
       pnl24h: "0 Violations",
       pnlPositive: true,
-      targetContract: "0x1000000000000000000000000000000000000100",
-      targetName: "Monad RIP-7212 Precompile",
+      targetContract: "0x0100000000000000000000000000000000000100",
+      targetName: "Monad P256 Precompile",
       status: "MONITORING",
       callsPerHr: 1440,
     },
@@ -270,22 +270,20 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-[#0d0e12] text-white flex flex-col font-sans antialiased selection:bg-[#E1007E]/30 selection:text-white">
-      {/* 1. TOP HEADER (Exact 1:1 Gearbox Protocol Navigation Benchmark) */}
+      {/* 1. TOP HEADER */}
       <header className="border-b border-white/[0.08] bg-[#0d0e12]/95 backdrop-blur-md sticky top-0 z-50">
         <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-8 h-16 flex items-center justify-between">
           <div className="flex items-center gap-8">
           {/* Logo */}
           <div className="flex items-center gap-2.5 cursor-pointer" onClick={() => setActiveTab("fleet")}>
-            <div className="w-8 h-8 rounded-full bg-[#E1007E] flex items-center justify-center shadow-[0_0_16px_rgba(225,0,126,0.4)]">
-              <Zap className="w-4 h-4 text-white fill-white" />
-            </div>
+            <img src="/logo.jpg" alt="Operon" className="w-8 h-8 rounded-full object-cover shadow-[0_0_16px_rgba(225,0,126,0.4)]" />
             <div className="flex items-center gap-1.5 leading-none">
               <span className="font-bold text-white text-base tracking-tight">OPERON</span>
-              <span className="font-bold text-[#E1007E] text-base tracking-tight">AGENTIC</span>
+              <span className="font-bold text-[#E1007E] text-base tracking-tight">PROTOCOL</span>
             </div>
           </div>
 
-          {/* Nav Links with Gearbox Active Pink Underline */}
+          {/* Nav Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-semibold">
             <button
               onClick={() => {
@@ -388,7 +386,7 @@ export default function Home() {
         </div>
       </header>
 
-      {/* 2. SUB-HEADER BANNER & 3 METRIC CARDS (Exact 1:1 Gearbox Structure) */}
+      {/* 2. SUB-HEADER BANNER & 3 METRIC CARDS */}
       <main className="flex-1 max-w-[1440px] w-full mx-auto px-6 sm:px-8 py-8 flex flex-col gap-6">
         {/* Title & Subtitle */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
@@ -397,7 +395,7 @@ export default function Home() {
               {activeTab === "fleet" && "Autonomous Operator Fleets"}
               {activeTab === "parallel" && "Monad Parallel Execution Pipeline"}
               {activeTab === "enclave" && "Apple Silicon Enclave & RIP-7212"}
-              {activeTab === "vault" && "T3tris Permissionless Credit Vault"}
+              {activeTab === "vault" && "Operon Permissionless Credit Vault"}
             </h1>
             <p className="text-xs sm:text-sm text-neutral-400 mt-1">
               Isolated sovereign enclaves issuing continuous bounded credit to trading agents on Monad Cancun
@@ -410,7 +408,7 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Top 3 KPI Cards (Modeled exactly after Total TVL, Total Supply, Total Borrowed in Gearbox) */}
+        {/* Top 3 KPI Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="bg-[#14161f] border border-white/[0.08] rounded-2xl p-5 space-y-1">
             <span className="text-xs text-neutral-400 font-medium uppercase font-mono">
@@ -432,7 +430,7 @@ export default function Home() {
               100.00 MON
             </div>
             <span className="text-[11px] text-[#E1007E] font-mono block">
-              Advance Senior Liquidity Line
+              Operon Senior Liquidity Line
             </span>
           </div>
 
@@ -449,10 +447,10 @@ export default function Home() {
           </div>
         </div>
 
-        {/* TAB 1: FLEET TABLE (Exact 1:1 Gearbox Opportunities Table) */}
+        {/* TAB 1: FLEET TABLE */}
         {activeTab === "fleet" && (
           <div className="flex flex-col gap-6">
-            {/* Gearbox Segmented Pill Filters Row (No heavy enclosing container!) */}
+            {/* Segmented Pill Filters Row */}
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pt-1">
               <div className="flex flex-wrap items-center gap-3">
                 {/* Network pill */}
@@ -583,7 +581,7 @@ export default function Home() {
                         <td className="py-4 px-4 text-right font-mono font-semibold text-white">
                           <div>{op.creditAllocated}</div>
                           <div className="text-[10px] text-neutral-500 font-normal">
-                            Advance Line
+                            Operon Line
                           </div>
                         </td>
 
@@ -717,7 +715,7 @@ export default function Home() {
             <div className="flex items-center justify-between border-b border-white/[0.06] pb-3">
               <div className="flex items-center gap-2">
                 <DollarSign className="w-5 h-5 text-[#00F59B]" />
-                <h2 className="text-lg font-bold text-white">T3tris Permissionless Credit Vault</h2>
+                <h2 className="text-lg font-bold text-white">Operon Credit Vault</h2>
               </div>
               <span className="text-xs px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-mono font-bold">
                 Senior Solvency 142.8%

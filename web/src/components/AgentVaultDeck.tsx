@@ -183,7 +183,7 @@ export const AgentVaultDeck: React.FC<AgentVaultDeckProps> = ({
     <div className={`tactile-card rounded-2xl p-6 flex flex-col gap-5 transition-all duration-300 ${
       circuitBreakerActive ? "border-amber-500/40 glow-amber" : ""
     }`}>
-      {/* Header with T3tris & Advance Primitives */}
+      {/* Header with Operon Primitives */}
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-white/[0.08]">
         <div className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-[#836EF9]/10 border border-[#836EF9]/30 flex items-center justify-center">
@@ -197,7 +197,7 @@ export const AgentVaultDeck: React.FC<AgentVaultDeckProps> = ({
               </span>
             </h2>
             <p className="text-xs text-neutral-400 font-mono">
-              T3tris Permissionless Vault + Advance Continuous Agent Credit Line on Monad
+              Operon Permissionless Vault + Continuous Agent Credit Line on Monad
             </p>
           </div>
         </div>
@@ -345,7 +345,7 @@ export const AgentVaultDeck: React.FC<AgentVaultDeckProps> = ({
               onClick={handleClaimPerformanceFee}
               disabled={isClaiming || parseFloat(claimableFees) <= 0}
               className="py-2.5 px-3 rounded-xl bg-[#836EF9]/15 hover:bg-[#836EF9]/25 active:scale-[0.99] text-[#836EF9] hover:text-purple-200 border border-[#836EF9]/30 font-mono text-xs font-bold uppercase transition-all flex items-center justify-center gap-1.5 disabled:opacity-50"
-              title="Harvest 20% Agent Operator Performance Fee (T3tris Curator Model)"
+              title="Harvest 20% Agent Operator Performance Fee"
             >
               <Sparkles className="w-3.5 h-3.5" />
               <span>{isClaiming ? "Harvesting..." : `Claim Fee (${claimableFees} MON)`}</span>
@@ -354,14 +354,14 @@ export const AgentVaultDeck: React.FC<AgentVaultDeckProps> = ({
         </div>
       </div>
 
-      {/* T3tris Strategy Card Footer */}
+      {/* Strategy Card Footer */}
       <div className="mt-1 p-3 rounded-xl bg-[#0d0f1a] border border-[#836EF9]/20 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
         <div className="flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-[#00F59B] animate-pulse" />
           <span className="text-neutral-300 font-semibold">Active Strategy: Monad High-Frequency Kuru Scalper v1.4</span>
         </div>
         <div className="flex items-center gap-4 text-neutral-400 text-[11px]">
-          <span>Settlement: <span className="text-white">Continuous Clearing (Advance)</span></span>
+          <span>Settlement: <span className="text-white">Continuous Monad Clearing</span></span>
           <span>Risk Lock: <span className="text-[#00F59B]">Below-Model Hard Revert</span></span>
         </div>
       </div>
